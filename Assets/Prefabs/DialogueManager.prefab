@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8060797491145275098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8547960306704851812}
+  - component: {fileID: 2428296465521220623}
+  m_Layer: 0
+  m_Name: DialogueManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8547960306704851812
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8060797491145275098}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2428296465521220623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8060797491145275098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d984333d1c0ac5419d3840a3a762ed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
+  DialogueUI: {fileID: 0}
+  AudioSource: {fileID: 0}
+  DialogueEntries:
+  - Name: 1
+    Audio: {fileID: 8300000, guid: 95276504c662e7947924d98bc8f90b4d, type: 3}
+    Transcription: Falsche Sequenzen werden bestraft.
+    Game: 1
+    Condition: 0
+  - Name: 2
+    Audio: {fileID: 8300000, guid: 0163bbe11d78ebf4d84bd5f303ddd757, type: 3}
+    Transcription: "Interessant. Man dr\xFCckt erst und denkt dann nach."
+    Game: 1
+    Condition: 1
+  - Name: 3
+    Audio: {fileID: 8300000, guid: 384eb7a41e0e2d54f90319d7ff19e5f4, type: 3}
+    Transcription: "Sie spielen um ihr \xDCberleben und ignorieren dabei alle Spielz\xFCge?!"
+    Game: 1
+    Condition: 1
+  - Name: 4
+    Audio: {fileID: 8300000, guid: 60d7892b0a1e82d49aba88aaeac68c13, type: 3}
+    Transcription: "Also doch ein Erfolg, was? Pit. Tun wir nicht so, als w\xE4re
+      er verdient gewesen."
+    Game: 2
+    Condition: 0
+  - Name: 5
+    Audio: {fileID: 8300000, guid: 0cc0c64c60cbee142a1d3460e558316f, type: 3}
+    Transcription: "Du hast Gl\xFCck. Du kannst vorerst weiteratmen."
+    Game: 2
+    Condition: 0
+  - Name: 6
+    Audio: {fileID: 8300000, guid: 440dda9dee00d114c9b7223f42ce5372, type: 3}
+    Transcription: "Faszinierende Dummheit gepaart mit Gl\xFCck ist eine gef\xE4hrliche
+      Mischung"
+    Game: 2
+    Condition: 0
+  - Name: 7
+    Audio: {fileID: 8300000, guid: 82fc1aabf988c1c43a5bbf3af4b69c34, type: 3}
+    Transcription: "Schade. Du hast das falsche H\xFCtchen gew\xE4hlt. Und Fehler
+      hier... sagen wir einfach, sie haben Konsequenzen."
+    Game: 0
+    Condition: 1
+  - Name: 8
+    Audio: {fileID: 8300000, guid: c47a8bfce06c67a4ab5003f723fe9400, type: 3}
+    Transcription: "Unglaublich. Du scheiterst mit einer Anmut, die fast vermuten
+      l\xE4sst, es sei Absicht."
+    Game: 2
+    Condition: 1
+  - Name: 9
+    Audio: {fileID: 8300000, guid: 64d6127f85e6a6c4d8ca7b3c3a0c48f1, type: 3}
+    Transcription: "Ah. Also so ein Typ Mensch... selbstsicher im Verkauf und dabei
+      st\xE4ndig falsch!"
+    Game: 2
+    Condition: 1
+  - Name: 10
+    Audio: {fileID: 8300000, guid: f5ea7294b26e0f34ba03736b82969fb3, type: 3}
+    Transcription: "Endlich wach! Gut, du hast lange genug geschlafen. Die Regeln
+      sind ganz einfach: Du f\xE4llst \u2013 du bleibst liegen!"
+    Game: 0
+    Condition: 2
+  - Name: 11
+    Audio: {fileID: 8300000, guid: 2cfc8708a030d044b8ffadc85130265c, type: 3}
+    Transcription: Im Moment gehen sie vielleicht. Aber sei nicht sentimental. Wir
+      werden uns wiedersehen!
+    Game: 0
+    Condition: 3
