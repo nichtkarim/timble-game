@@ -45,14 +45,24 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance == null)
+        // Falls das Script auf einem UI-Objekt (Canvas/RectTransform) liegt, wollen wir nicht den kompletten UI-Tree mit DontDestroyOnLoad mitnehmen.
+        bool isUIRoot = GetComponent<Canvas>() != null || GetComponent<RectTransform>() != null;
+
+        if (_instance != null && _instance != this)
         {
-            _instance = this;
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+
+        if (!isUIRoot)
+        {
             DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            Debug.Log("GameManager läuft auf UI-Root, wird nicht persistent gemacht, um HUDs nicht mitzuschleppen.");
         }
     }
 
@@ -109,11 +119,62 @@ public class GameManager : MonoBehaviour
 
     void LoadScene(string sceneName)
     {
-        if (!string.IsNullOrEmpty(sceneName))
+        if (string.IsNullOrEmpty(sceneName))
         {
-            // Lösche alle geladenen Szenen außer DontDestroyOnLoad Objekte
-            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+            Debug.LogError("LoadScene aufgerufen mit leerem Szenennamen.");
+            return;
         }
+
+        Debug.Log($"Versuche Szene zu laden: '{sceneName}'");
+
+        // Direkt versuchen, wenn vorhanden
+        if (Application.CanStreamedLevelBeLoaded(sceneName))
+        {
+            SceneManager.sceneLoaded += OnSceneLoadedOnce;
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+            return;
+        }
+
+        // Fallback: Case-insensitive Match gegen Build-Settings suchen (für case-sensitive Filesysteme)
+        string matchedByCase = FindSceneNameCaseInsensitive(sceneName);
+        if (!string.IsNullOrEmpty(matchedByCase))
+        {
+            Debug.LogWarning($"Szene '{sceneName}' nicht gefunden, lade case-korrigierte Szene '{matchedByCase}'.");
+            SceneManager.sceneLoaded += OnSceneLoadedOnce;
+            SceneManager.LoadScene(matchedByCase, LoadSceneMode.Single);
+            return;
+        }
+
+        Debug.LogError($"Szene '{sceneName}' konnte nicht geladen werden. Ist sie in den Build Settings? -> File > Build Settings...");
+    }
+
+    string FindSceneNameCaseInsensitive(string requested)
+    {
+        try
+        {
+            int count = SceneManager.sceneCountInBuildSettings;
+            for (int i = 0; i < count; i++)
+            {
+                var path = UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(i);
+                if (string.IsNullOrEmpty(path)) continue;
+                var name = System.IO.Path.GetFileNameWithoutExtension(path);
+                if (string.Equals(name, requested, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    return name; // korrekt geschriebener Name aus BuildSettings
+                }
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning($"FindSceneNameCaseInsensitive Exception: {ex.Message}");
+        }
+        return null;
+    }
+
+    void OnSceneLoadedOnce(Scene scene, LoadSceneMode mode)
+    {
+        SceneManager.sceneLoaded -= OnSceneLoadedOnce;
+        Debug.Log($"Szene geladen: '{scene.name}' (Modus: {mode})");
     }
 
     public void GameOver()

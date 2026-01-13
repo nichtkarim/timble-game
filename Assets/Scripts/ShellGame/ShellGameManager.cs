@@ -21,11 +21,13 @@ public class ShellGameManager : MonoBehaviour
     [Header("Game Settings")]
     public int DealerLives = 10;
     public int PlayerLives = 10;
-    public int ShuffleCount = 20; // Harder
+    public int ShuffleCount = 40; // Harder
     public float ShuffleSpeed = 10f; // Much Faster
+    
 
     private int _ballIndex = 1; // Mittlerer Becher initial
     private bool _canInteract = false;
+    private float _initialShuffleSpeed; // Ursprüngliche Shuffle-Geschwindigkeit
     // private bool _roundActive = false; // Ungenutzt vorerst
     
     // Zustand
@@ -53,6 +55,7 @@ public class ShellGameManager : MonoBehaviour
     {
         DealerLives = 10; 
         PlayerLives = 10;
+        _initialShuffleSpeed = ShuffleSpeed; // Speichere ursprüngliche Geschwindigkeit
         Intuition.Initialize();
         
         // Erzeuge Ball
@@ -310,8 +313,6 @@ public class ShellGameManager : MonoBehaviour
         if (cheat)
         {
             hasBall = false;
-            // Falls wir betrügen, blieb der Ball am Becher befestigt (oder wir lassen ihn versteckt).
-            // Aktuell hebt er sich mit dem Becher, was "versteckt" sein könnte wenn Becher undurchsichtig ist.
         }
         else
         {
@@ -405,6 +406,30 @@ public class ShellGameManager : MonoBehaviour
 
             return;
         }
+        
+        // Dynamische Schwierigkeit: Graduell erhöhte ShuffleSpeed basierend auf Vorsprung
+        int lifeAdvantage = PlayerLives - DealerLives;
+        float targetSpeed = _initialShuffleSpeed;
+        
+        if (lifeAdvantage >= 4)
+        {
+            targetSpeed += 1f;
+            UI.UpdateStatus($"Schwierigkeit ++++ erhöht!");
+        }
+        else if (lifeAdvantage >= 3)
+        {
+            targetSpeed += 0.66f;
+            UI.UpdateStatus($"Schwierigkeit +++ erhöht!");
+        }
+        else if (lifeAdvantage >= 2)
+        {
+            targetSpeed += 0.33f;
+            UI.UpdateStatus($"Schwierigkeit ++ erhöht!");
+        }
+        
+        
+        ShuffleSpeed = targetSpeed;
+        Debug.Log($"Lebens-Vorsprung: {lifeAdvantage} | ShuffleSpeed: {ShuffleSpeed}");
         
         // Nächste Runde
         StartCoroutine(StartRound());
